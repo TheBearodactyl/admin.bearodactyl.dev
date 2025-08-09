@@ -38,6 +38,7 @@
     if (validationResult.isValid && localContent.trim()) {
       const minified = minifyJsonSafely(localContent);
       handleContentChange(minified);
+      hasUnsavedChanges = true;
     }
   }
 
@@ -53,7 +54,6 @@
     hasUnsavedChanges = false;
   }
 
-  // Sync with external content changes - this is the key fix
   $effect(() => {
     localContent = content;
     validationResult = validateJsonWithDetails(content);
@@ -91,7 +91,7 @@
           <span
             class="flex items-center gap-1 text-xs px-2 py-1 bg-rose-pine-gold/20 text-rose-pine-gold rounded"
           >
-            • Unsaved
+            Unsaved
           </span>
         {/if}
       </div>
@@ -121,7 +121,7 @@
       <Button
         size="sm"
         onclick={handleSave}
-        disabled={!validationResult.isValid || !hasUnsavedChanges}
+        disabled={!hasUnsavedChanges}
       >
         Apply Changes
       </Button>

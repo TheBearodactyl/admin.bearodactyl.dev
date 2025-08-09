@@ -14,6 +14,6 @@
   </main>
   <ErrorToast 
     errors={appState.state.errors} 
-    onClear={appState.clearErrors} 
+    onRemove={appState.removeError} 
   />
 </div>

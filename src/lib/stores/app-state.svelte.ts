@@ -155,7 +155,6 @@ function createAppState() {
 
   function exitRawEditMode() {
     if (state.activeDataType) {
-      // Reset raw content to current data and exit
       state.rawContent = JSON.stringify(state[state.activeDataType], null, 2);
       state.rawEditMode = false;
     }
@@ -170,7 +169,6 @@ function createAppState() {
     items[index] = item;
     state[dataType] = items;
 
-    // Update raw content if in raw edit mode for this data type
     if (state.activeDataType === dataType && !state.rawEditMode) {
       state.rawContent = JSON.stringify(items, null, 2);
     }
@@ -180,7 +178,6 @@ function createAppState() {
     const items = [...state[dataType], item];
     state[dataType] = items;
 
-    // Update raw content if in raw edit mode for this data type
     if (state.activeDataType === dataType && !state.rawEditMode) {
       state.rawContent = JSON.stringify(items, null, 2);
     }
