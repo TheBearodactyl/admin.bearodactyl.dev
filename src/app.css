@@ -1,0 +1,53 @@
+@import "tailwindcss";
+
+:root {
+  /* Rose Pine Theme */
+  --base: #191724;
+  --surface: #1f1d2e;
+  --overlay: #26233a;
+  --muted: #6e6a86;
+  --subtle: #908caa;
+  --text: #e0def4;
+  --love: #eb6f92;
+  --gold: #f6c177;
+  --rose: #ebbcba;
+  --pine: #31748f;
+  --foam: #9ccfd8;
+  --iris: #c4a7e7;
+  --highlight-low: #21202e;
+  --highlight-med: #403d52;
+  --highlight-high: #524f67;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: system-ui, sans-serif;
+}
+
+body {
+  margin: 0;
+  background-color: var(--base);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+.rose-pine-scrollbar::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.rose-pine-scrollbar::-webkit-scrollbar-track {
+  background: var(--surface);
+}
+
+.rose-pine-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--muted);
+  border-radius: 4px;
+}
+
+.rose-pine-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--subtle);
+}
