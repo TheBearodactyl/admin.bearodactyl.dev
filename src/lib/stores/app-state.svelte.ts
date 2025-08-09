@@ -11,6 +11,7 @@ interface AppState {
   games: DataItem[];
   reviews: DataItem[];
   projects: DataItem[];
+  funny_images: DataItem[];
   loading: DataType | null;
   errors: AppError[];
   githubConfig: GitHubConfig | null;
@@ -25,6 +26,7 @@ function createAppState() {
     games: [],
     reviews: [],
     projects: [],
+    funny_images: [],
     loading: null,
     errors: [],
     githubConfig: null,

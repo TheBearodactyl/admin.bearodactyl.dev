@@ -7,7 +7,7 @@
     onSelect: (type: DataType) => void;
     onDownload: (type: DataType) => Promise<void>;
     onUpload: (type: DataType) => Promise<void>;
-    loading: DataType | null;
+    loading: boolean;
     dataCounts: Record<DataType, number>;
   }
 
@@ -30,10 +30,16 @@
     { key: "games", label: "Games", icon: "🎮", color: "rose-pine-pine" },
     { key: "reviews", label: "Reviews", icon: "📝", color: "rose-pine-foam" },
     { key: "projects", label: "Projects", icon: "🛠️", color: "rose-pine-gold" },
+    {
+      key: "funny_images",
+      label: "Funny Images",
+      icon: "😂",
+      color: "rose-pine-iris",
+    },
   ];
 </script>
 
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
   {#each dataTypes as dataType}
     <div
       class="bg-rose-pine-surface rounded-lg p-4 border border-rose-pine-overlay"
@@ -62,7 +68,7 @@
             size="sm"
             variant="ghost"
             onclick={() => onDownload(dataType.key)}
-            loading={loading === dataType.key}
+            {loading}
           >
             ⬇️ Pull
           </Button>
@@ -71,7 +77,7 @@
             size="sm"
             variant="ghost"
             onclick={() => onUpload(dataType.key)}
-            loading={loading === dataType.key}
+            {loading}
           >
             ⬆️ Push
           </Button>

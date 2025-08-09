@@ -7,8 +7,9 @@
   import GameEditor from "$lib/components/GameEditor.svelte";
   import ReviewEditor from "$lib/components/ReviewEditor.svelte";
   import ProjectEditor from "$lib/components/ProjectEditor.svelte";
+  import FunnyImgEditor from "$lib/components/FunnyImgEditor.svelte"; // Add this import
   import Button from "$lib/components/Button.svelte";
-  import type { Book, DataType, Game, Project, Review } from "$lib/types.js";
+  import type { Book, DataType, FunnyImg, Game, Project, Review } from "$lib/types.js";
 
   const state = appState.state;
 
@@ -17,6 +18,7 @@
     games: state.games.length,
     reviews: state.reviews.length,
     projects: state.projects.length,
+    funny_images: state.funny_images.length, // Add this line
   });
 
   async function handleDownload(dataType: DataType) {
@@ -40,12 +42,10 @@
   }
 
   function handleRawSave() {
-    // Apply the changes and exit raw mode
     appState.toggleRawEditMode();
   }
 
   function handleRawCancel() {
-    // Exit raw mode without applying changes
     if (state.activeDataType) {
       appState.updateRawContent(
         JSON.stringify(state[state.activeDataType], null, 2)
@@ -85,7 +85,7 @@
       onSelect={handleDataTypeSelect}
       onDownload={handleDownload}
       onUpload={handleUpload}
-      loading={state.activeDataType}
+      loading={state.loading === state.activeDataType}
       {dataCounts}
     />
 
@@ -95,7 +95,9 @@
       >
         <div class="flex items-center justify-between mb-4">
           <h2 class="text-lg font-semibold text-rose-pine-text capitalize">
-            {state.activeDataType} Editor
+            {state.activeDataType === "funny_images" ?
+              "Funny Images"
+            : state.activeDataType} Editor
           </h2>
           <div class="flex gap-2">
             <Button
@@ -153,6 +155,14 @@
               appState.updateItem("projects", index, project)}
             onAdd={(project) => appState.addItem("projects", project)}
             onRemove={(index) => appState.removeItem("projects", index)}
+          />
+        {:else if state.activeDataType === "funny_images"}
+          <FunnyImgEditor
+            funnyimgs={state.funny_images as FunnyImg[]}
+            onUpdate={(index, funnyimg) =>
+              appState.updateItem("funny_images", index, funnyimg)}
+            onAdd={(funnyimg) => appState.addItem("funny_images", funnyimg)}
+            onRemove={(index) => appState.removeItem("funny_images", index)}
           />
         {/if}
       </div>
