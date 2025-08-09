@@ -3,10 +3,10 @@
 
   interface Props {
     errors: AppError[];
-    onClear: () => void;
+    onRemove: (timestamp: number) => void;
   }
 
-  let { errors, onClear }: Props = $props();
+  let { errors, onRemove }: Props = $props();
 
   function getErrorIcon(type: AppError["type"]) {
     switch (type) {
@@ -43,7 +43,7 @@
           <span class="flex-shrink-0">{getErrorIcon(error.type)}</span>
           <p class="flex-1">{error.message}</p>
           <button
-            onclick={() => onClear()}
+            onclick={() => onRemove(error.timestamp)}
             class="text-rose-pine-muted hover:text-rose-pine-text flex-shrink-0"
           >
             ✕

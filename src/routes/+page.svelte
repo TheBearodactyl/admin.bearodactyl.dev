@@ -38,6 +38,21 @@
   function handleRawContentUpdate(content: string) {
     appState.updateRawContent(content);
   }
+
+  function handleRawSave() {
+    // Apply the changes and exit raw mode
+    appState.toggleRawEditMode();
+  }
+
+  function handleRawCancel() {
+    // Exit raw mode without applying changes
+    if (state.activeDataType) {
+      appState.updateRawContent(
+        JSON.stringify(state[state.activeDataType], null, 2)
+      );
+      state.rawEditMode = false;
+    }
+  }
 </script>
 
 <div class="space-y-6">
@@ -64,12 +79,13 @@
         </Button>
       </div>
     </div>
+
     <DataTypeSelector
       activeType={state.activeDataType}
       onSelect={handleDataTypeSelect}
       onDownload={handleDownload}
       onUpload={handleUpload}
-      loading={state.loading}
+      loading={state.activeDataType}
       {dataCounts}
     />
 
@@ -103,8 +119,8 @@
           <RawEditor
             content={state.rawContent}
             onUpdate={handleRawContentUpdate}
-            onSave={handleToggleRawEdit}
-            onCancel={handleToggleRawEdit}
+            onSave={handleRawSave}
+            onCancel={handleRawCancel}
           />
         {:else if state.activeDataType === "books"}
           <BookEditor

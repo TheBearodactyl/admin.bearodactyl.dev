@@ -7,7 +7,7 @@
     onSelect: (type: DataType) => void;
     onDownload: (type: DataType) => Promise<void>;
     onUpload: (type: DataType) => Promise<void>;
-    loading: boolean;
+    loading: DataType | null;
     dataCounts: Record<DataType, number>;
   }
 
@@ -62,7 +62,7 @@
             size="sm"
             variant="ghost"
             onclick={() => onDownload(dataType.key)}
-            {loading}
+            loading={loading === dataType.key}
           >
             ⬇️ Pull
           </Button>
@@ -71,7 +71,7 @@
             size="sm"
             variant="ghost"
             onclick={() => onUpload(dataType.key)}
-            {loading}
+            loading={loading === dataType.key}
           >
             ⬆️ Push
           </Button>
