@@ -1,6 +1,10 @@
 import type { DataType, DataItem, AppError, GitHubConfig } from "../types.js";
 import { GitHubService } from "../services/github.js";
-import { getStoredGitHubConfig, removeStoredGitHubConfig, storeGitHubConfig } from "$lib/utils/env.js";
+import {
+  getStoredGitHubConfig,
+  removeStoredGitHubConfig,
+  storeGitHubConfig,
+} from "$lib/utils/env.js";
 
 interface AppState {
   books: DataItem[];
@@ -31,11 +35,15 @@ function createAppState() {
 
   let githubService: GitHubService | null = null;
 
-  function initGitHub(config: GitHubConfig | null) {
+  function initGitHub(config: GitHubConfig | null, remember: boolean = true) {
     if (config) {
       state.githubConfig = config;
       githubService = new GitHubService(config);
-      storeGitHubConfig(config);
+      if (remember) {
+        storeGitHubConfig(config);
+      } else {
+        removeStoredGitHubConfig();
+      }
     } else {
       state.githubConfig = null;
       githubService = null;

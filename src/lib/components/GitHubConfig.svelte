@@ -3,7 +3,7 @@
   import type { GitHubConfig } from "../types.js";
 
   interface Props {
-    onSave: (config: GitHubConfig) => void;
+    onSave: (config: GitHubConfig, remember: boolean) => void; // pass remember flag too
   }
 
   let { onSave }: Props = $props();
@@ -11,17 +11,21 @@
   let owner = $state("");
   let repo = $state("");
   let token = $state("");
+  let remember = $state(true);
 
   function handleSave() {
     if (!owner.trim() || !repo.trim() || !token.trim()) {
       return;
     }
 
-    onSave({
-      owner: owner.trim(),
-      repo: repo.trim(),
-      token: token.trim(),
-    });
+    onSave(
+      {
+        owner: owner.trim(),
+        repo: repo.trim(),
+        token: token.trim(),
+      },
+      remember
+    );
   }
 </script>
 
@@ -33,6 +37,7 @@
   </h2>
 
   <div class="space-y-4">
+    <!-- Owner input -->
     <div>
       <label
         for="owner"
@@ -49,6 +54,7 @@
       />
     </div>
 
+    <!-- Repo input -->
     <div>
       <label
         for="repo"
@@ -65,6 +71,7 @@
       />
     </div>
 
+    <!-- Token input -->
     <div>
       <label
         for="token"
@@ -83,10 +90,22 @@
       </p>
     </div>
 
-    <Button
-      onclick={handleSave}
-    >
-      Save Configuration
-    </Button>
+    <!-- Remember Me checkbox -->
+    <div class="flex items-center space-x-2">
+      <input
+        type="checkbox"
+        id="rememberMe"
+        bind:checked={remember}
+        class="rounded border-rose-pine-overlay text-rose-pine-iris focus:ring-rose-pine-iris"
+      />
+      <label
+        for="rememberMe"
+        class="text-sm text-rose-pine-text select-none"
+      >
+        Remember me
+      </label>
+    </div>
+
+    <Button onclick={handleSave}>Save Configuration</Button>
   </div>
 </div>
