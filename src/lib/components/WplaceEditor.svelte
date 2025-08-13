@@ -1,27 +1,31 @@
 <script lang="ts">
   import Button from "./Button.svelte";
-  import type { FunnyImg } from "../types.js";
+  import type { WplaceScreenshot } from "../types";
 
   interface Props {
-    funnyimgs: FunnyImg[];
-    onUpdate: (index: number, funnyimg: FunnyImg) => void;
-    onAdd: (funnyimg: FunnyImg) => void;
+    screenshots: WplaceScreenshot[];
+    onUpdate: (index: number, funnyimg: WplaceScreenshot) => void;
+    onAdd: (funnyimg: WplaceScreenshot) => void;
     onRemove: (index: number) => void;
   }
 
-  let { funnyimgs, onUpdate, onAdd, onRemove }: Props = $props();
+  let { screenshots: funnyimgs, onUpdate, onAdd, onRemove }: Props = $props();
 
   let showAddForm = $state(false);
-  let newFunnyImg = $state<FunnyImg>({
-    src: "",
+  let newFunnyImg = $state<WplaceScreenshot>({
+    coverImage: "",
     alt: "",
   });
   let editingIndex = $state<number | null>(null);
-  let editingImg = $state<FunnyImg>({ src: "", alt: "" });
+  let editingImg = $state<WplaceScreenshot>({ coverImage: "", alt: "" });
   let imagePreviewErrors = $state<Set<number>>(new Set());
 
   function handleAdd() {
-    if (newFunnyImg.src.trim() && newFunnyImg.alt.trim()) {
+    if (
+      newFunnyImg.coverImage &&
+      newFunnyImg.coverImage.trim() &&
+      newFunnyImg.alt
+    ) {
       onAdd({ ...newFunnyImg });
       resetNewFunnyImg();
       showAddForm = false;
@@ -30,7 +34,7 @@
 
   function resetNewFunnyImg() {
     newFunnyImg = {
-      src: "",
+      coverImage: "",
       alt: "",
     };
   }
@@ -43,8 +47,9 @@
   function saveEdit() {
     if (
       editingIndex !== null &&
-      editingImg.src.trim() &&
-      editingImg.alt.trim()
+      editingImg.coverImage &&
+      editingImg.coverImage.trim() &&
+      editingImg.alt
     ) {
       onUpdate(editingIndex, { ...editingImg });
       cancelEdit();
@@ -53,7 +58,7 @@
 
   function cancelEdit() {
     editingIndex = null;
-    editingImg = { src: "", alt: "" };
+    editingImg = { coverImage: "", alt: "" };
   }
 
   function handleImageError(index: number) {
@@ -101,7 +106,6 @@
   }
 
   function bulkRemove() {
-    // Remove in reverse order to maintain correct indices
     const sortedIndices = Array.from(selectedItems).sort((a, b) => b - a);
     sortedIndices.forEach((index) => onRemove(index));
     clearSelection();
@@ -158,7 +162,6 @@
     </div>
   </div>
 
-  <!-- Add form -->
   {#if showAddForm}
     <div
       class="bg-rose-pine-surface rounded-lg p-4 border border-rose-pine-overlay"
@@ -171,12 +174,12 @@
             Image URL
           </label>
           <input
-            bind:value={newFunnyImg.src}
+            bind:value={newFunnyImg.coverImage}
             type="url"
             placeholder="https://example.com/funny-image.jpg"
             class="w-full px-3 py-2 bg-rose-pine-base border border-rose-pine-overlay rounded-lg text-rose-pine-text placeholder-rose-pine-muted focus:outline-none focus:ring-2 focus:ring-rose-pine-iris"
           />
-          {#if newFunnyImg.src && !isValidUrl(newFunnyImg.src)}
+          {#if newFunnyImg.coverImage && !isValidUrl(newFunnyImg.coverImage)}
             <p class="text-xs text-rose-pine-love mt-1">
               Please enter a valid URL
             </p>
@@ -196,7 +199,7 @@
         </div>
 
         <!-- Preview -->
-        {#if newFunnyImg.src && isValidUrl(newFunnyImg.src)}
+        {#if newFunnyImg.coverImage && isValidUrl(newFunnyImg.coverImage)}
           <div class="mt-3">
             <!-- svelte-ignore a11y_label_has_associated_control -->
             <label class="block text-sm font-medium text-rose-pine-text mb-2"
@@ -204,7 +207,7 @@
             >
             <div class="max-w-xs">
               <img
-                src={newFunnyImg.src}
+                src={newFunnyImg.coverImage}
                 alt={newFunnyImg.alt}
                 class="max-w-full h-auto rounded border border-rose-pine-overlay"
                 onerror={() => {
@@ -219,14 +222,7 @@
         {/if}
 
         <div class="flex gap-2 pt-2">
-          <Button
-            onclick={handleAdd}
-            disabled={!newFunnyImg.src.trim() ||
-              !newFunnyImg.alt.trim() ||
-              !isValidUrl(newFunnyImg.src)}
-          >
-            Add Image
-          </Button>
+          <Button onclick={handleAdd}>Add Image</Button>
           <Button
             variant="secondary"
             onclick={() => {
@@ -276,7 +272,7 @@
                 </div>
               {:else}
                 <img
-                  src={img.src}
+                  src={img.coverImage}
                   alt={img.alt}
                   class="w-full h-full object-cover"
                   onerror={() => handleImageError(index)}
@@ -291,7 +287,7 @@
                 <!-- Edit form -->
                 <div class="space-y-3">
                   <input
-                    bind:value={editingImg.src}
+                    bind:value={editingImg.coverImage}
                     type="url"
                     placeholder="Image URL"
                     class="w-full px-3 py-2 bg-rose-pine-base border border-rose-pine-overlay rounded text-rose-pine-text placeholder-rose-pine-muted focus:outline-none focus:ring-2 focus:ring-rose-pine-iris text-sm"
@@ -305,9 +301,6 @@
                     <Button
                       size="sm"
                       onclick={saveEdit}
-                      disabled={!editingImg.src.trim() ||
-                        !editingImg.alt.trim() ||
-                        !isValidUrl(editingImg.src)}
                     >
                       Save
                     </Button>
@@ -337,15 +330,15 @@
                     </p>
                     <div class="flex items-center gap-2">
                       <a
-                        href={img.src}
+                        href={img.coverImage}
                         target="_blank"
                         rel="noopener noreferrer"
                         class="text-xs text-rose-pine-foam hover:underline truncate max-w-xs"
                       >
-                        {img.src}
+                        {img.coverImage}
                       </a>
                       <button
-                        onclick={() => copyToClipboard(img.src)}
+                        onclick={() => copyToClipboard(img.coverImage)}
                         class="text-xs text-rose-pine-muted hover:text-rose-pine-text p-1 rounded"
                         title="Copy URL"
                       >

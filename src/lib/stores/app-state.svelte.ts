@@ -1,17 +1,17 @@
-import type { DataType, DataItem, AppError, GitHubConfig } from "../types.js";
-import { GitHubService } from "../services/github.js";
+import type { DataType, DataItem, AppError, GitHubConfig } from "../types";
+import { GitHubService } from "../services/github";
 import {
   getStoredGitHubConfig,
   storeGitHubConfig,
   removeStoredGitHubConfig,
-} from "../utils/env.js";
+} from "../utils/env";
 
 interface AppState {
   books: DataItem[];
   games: DataItem[];
   reviews: DataItem[];
   projects: DataItem[];
-  funny_images: DataItem[];
+  wplace: DataItem[];
   loading: DataType | null;
   errors: AppError[];
   githubConfig: GitHubConfig | null;
@@ -26,7 +26,7 @@ function createAppState() {
     games: [],
     reviews: [],
     projects: [],
-    funny_images: [],
+    wplace: [],
     loading: null,
     errors: [],
     githubConfig: null,
@@ -57,7 +57,6 @@ function createAppState() {
     };
     state.errors = [...state.errors, error];
 
-    // Auto-remove errors after 5 seconds
     setTimeout(() => {
       state.errors = state.errors.filter(
         (e) => e.timestamp !== error.timestamp
@@ -80,7 +79,6 @@ function createAppState() {
       const data = await githubService.downloadAsset(dataType);
       state[dataType] = data;
 
-      // Update raw content if this is the active data type
       if (state.activeDataType === dataType) {
         state.rawContent = JSON.stringify(data, null, 2);
       }
@@ -122,7 +120,6 @@ function createAppState() {
     state.activeDataType = dataType;
     state.rawEditMode = false;
 
-    // Initialize raw content when setting active data type
     if (dataType) {
       state.rawContent = JSON.stringify(state[dataType], null, 2);
     } else {
@@ -136,7 +133,6 @@ function createAppState() {
         state.rawContent = JSON.stringify(state[state.activeDataType], null, 2);
         state.rawEditMode = true;
       } else {
-        // Exiting raw edit mode - try to apply changes
         try {
           const parsed = JSON.parse(state.rawContent);
           if (Array.isArray(parsed)) {
@@ -145,7 +141,7 @@ function createAppState() {
             state.rawEditMode = false;
           } else {
             addError("Raw content must be an array");
-            return; // Don't exit raw mode if data is invalid
+            return;
           }
         } catch (error) {
           addError("Invalid JSON in raw content");
@@ -224,7 +220,7 @@ function createAppState() {
     updateItem,
     addItem,
     removeItem,
-    removeError
+    removeError,
   };
 }
 

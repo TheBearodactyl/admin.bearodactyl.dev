@@ -31,9 +31,9 @@
     { key: "reviews", label: "Reviews", icon: "📝", color: "rose-pine-foam" },
     { key: "projects", label: "Projects", icon: "🛠️", color: "rose-pine-gold" },
     {
-      key: "funny_images",
-      label: "Funny Images",
-      icon: "😂",
+      key: "wplace",
+      label: "Wplace Screenshots",
+      icon: "",
       color: "rose-pine-iris",
     },
   ];

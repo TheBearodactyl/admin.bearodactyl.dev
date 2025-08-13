@@ -46,8 +46,8 @@ export interface Game {
   percent: number;
 }
 
-export type DataType = "books" | "games" | "reviews" | "projects" | "funny_images";
-export type DataItem = Book | Game | Review | Project | FunnyImg;
+export type DataType = "books" | "games" | "reviews" | "projects" | "wplace";
+export type DataItem = Book | Game | Review | Project | WplaceScreenshot;
 
 export interface GitHubConfig {
   owner: string;
@@ -61,7 +61,7 @@ export interface AppError {
   timestamp: number;
 }
 
-export interface FunnyImg {
-  src: string;
-  alt: string;
+export interface WplaceScreenshot {
+  coverImage: string;
+  alt?: string;
 }

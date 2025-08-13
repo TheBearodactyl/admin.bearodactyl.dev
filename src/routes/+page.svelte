@@ -7,9 +7,9 @@
   import GameEditor from "$lib/components/GameEditor.svelte";
   import ReviewEditor from "$lib/components/ReviewEditor.svelte";
   import ProjectEditor from "$lib/components/ProjectEditor.svelte";
-  import FunnyImgEditor from "$lib/components/FunnyImgEditor.svelte"; // Add this import
   import Button from "$lib/components/Button.svelte";
-  import type { Book, DataType, FunnyImg, Game, Project, Review } from "$lib/types.js";
+  import type { Book, DataType, WplaceScreenshot, Game, Project, Review } from "$lib/types.js";
+  import WplaceEditor from "$lib/components/WplaceEditor.svelte";
 
   const state = appState.state;
 
@@ -18,7 +18,7 @@
     games: state.games.length,
     reviews: state.reviews.length,
     projects: state.projects.length,
-    funny_images: state.funny_images.length, // Add this line
+    wplace: state.wplace.length, 
   });
 
   async function handleDownload(dataType: DataType) {
@@ -95,8 +95,8 @@
       >
         <div class="flex items-center justify-between mb-4">
           <h2 class="text-lg font-semibold text-rose-pine-text capitalize">
-            {state.activeDataType === "funny_images" ?
-              "Funny Images"
+            {state.activeDataType === "wplace" ?
+              "Wplace Findings"
             : state.activeDataType} Editor
           </h2>
           <div class="flex gap-2">
@@ -156,13 +156,13 @@
             onAdd={(project) => appState.addItem("projects", project)}
             onRemove={(index) => appState.removeItem("projects", index)}
           />
-        {:else if state.activeDataType === "funny_images"}
-          <FunnyImgEditor
-            funnyimgs={state.funny_images as FunnyImg[]}
-            onUpdate={(index, funnyimg) =>
-              appState.updateItem("funny_images", index, funnyimg)}
-            onAdd={(funnyimg) => appState.addItem("funny_images", funnyimg)}
-            onRemove={(index) => appState.removeItem("funny_images", index)}
+        {:else if state.activeDataType === "wplace"}
+          <WplaceEditor
+            screenshots={state.wplace as WplaceScreenshot[]}
+            onUpdate={(index, screenshot) =>
+              appState.updateItem("wplace", index, screenshot)}
+            onAdd={(screenshot) => appState.addItem("wplace", screenshot)}
+            onRemove={(index) => appState.removeItem("wplace", index)}
           />
         {/if}
       </div>
